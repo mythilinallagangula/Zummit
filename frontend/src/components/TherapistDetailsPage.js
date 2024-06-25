@@ -4,12 +4,12 @@ import Side_Navbar from "./Side_Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { add_councellor } from "../utils/bookingSlice";
+import { addCouncellor } from "../utils/bookingSlice";
 import { useNavigate } from "react-router-dom";
 
 function TherapistDetailsPage() {
 
-  const therapist_details = useSelector((state) => state.booking.selected_councellor)
+  const therapist_details = useSelector((state) => state.booking.selectedCouncellor)
   const user = useSelector((state) => state.user.data)
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function TherapistDetailsPage() {
       console.log(data)
       //add fetched data in redux state if data is available
       if (data) {
-        dispatch(add_councellor(data))
+        dispatch(addCouncellor(data))
       } else {
         return (
           <>
@@ -38,9 +38,12 @@ function TherapistDetailsPage() {
     getCouncellorData()
   }, [id, dispatch]);
 
-  function handle_booking_click() {
+  function handle_booking_click(e) {
+    e.preventDefault();
+
     if (user._id) {
-      navigate("/BookTherapistPage")
+      console.log(user);
+      navigate("/BookTherapistPage/1") //therapist _id will be used instead of 1
     } else {
       alert("Please Login to book session !")
     }
@@ -48,7 +51,7 @@ function TherapistDetailsPage() {
   return (<>
     <div className={user._id ? "flex" : "flex justify-center"}>
       {
-        user._id && user.role == "Client" && <Side_Navbar />
+        user._id && user.role == "client" && <Side_Navbar />
       }
       <div className="flex-col ml-[2vw] ">
         {/* search bar element */}
